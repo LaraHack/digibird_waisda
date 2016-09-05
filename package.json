@@ -1,13 +1,17 @@
 {
-  "name": "application-name",
+  "name": "digibird_waisda",
   "version": "0.0.1",
   "private": true,
   "scripts": {
     "start": "nodejs ./bin/www"
   },
+  "repository":{
+    "type": "git",
+    "url": "https://github.com/LaraHack/digibird_waisda"
+  },
   "dependencies": {
     "express": "~4.0.0",
     "cookie-parser": "~1.0.1",
-    "body-parser": "~1.0.0",
+    "body-parser": "~1.0.0"
   }
 }
