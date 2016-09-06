@@ -1,9 +1,18 @@
+/*****************************************************
+index
+
+GET home page
+*****************************************************/
 var express = require('express');
 var router = express.Router();
 
-/* GET home page. */
 router.get('/', function(req, res) {
-  res.render('index', { title: 'Express' });
+  var currentTime = new Date();
+  var formattedTime = currentTime.getHours() + ":" +
+                      currentTime.getMinutes();
+  res.render('home', {
+    time: formattedTime
+  });
 });
 
 module.exports = router;

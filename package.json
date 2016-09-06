@@ -3,17 +3,19 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www",
-    "startDev": "nodemon ./bin/www"
+    "start": "node ./app.js",
+    "startDev": "nodemon ./app.js"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/LaraHack/digibird_waisda"
   },
+  "author": "Cristina-Iulia Bucur",
   "dependencies": {
-    "express": "~4.0.0",
+    "body-parser": "~1.0.2",
     "cookie-parser": "~1.0.1",
-    "body-parser": "~1.0.2"
+    "express": "~4.0.0",
+    "express-handlebars": "^3.0.0"
   },
   "devDependencies": {
     "nodemon": "^1.10.2"
