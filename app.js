@@ -14,6 +14,8 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 // var users = require('./routes/users');
 
+var waisda = require('./middlewares/waisda');
+
 var app = express();
 
 // define express static middleware
@@ -60,6 +62,8 @@ app.use(function(err, req, res, next) {
         message: err.message
     });
 });
+
+waisda.mysql_connect();
 
 app.set('port', process.env.PORT || 3010);
 
