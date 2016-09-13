@@ -7,16 +7,13 @@ var express = require('express');
 var router = express.Router();
 
 router.get('/', function(req, res) {
-  // run every minute
-  setInterval(function() {
-    var currentTime = new Date();
-    var formattedTime = currentTime.getHours() + ":" +
-                        currentTime.getMinutes();
+    var currentDate = new Date();
+    var formattedDate = currentDate.getDate() + "-" +
+                        (currentDate.getMonth()+1) + "-" +
+                        currentDate.getFullYear();
     res.render('home', {
-      time: formattedTime
+      date: formattedDate
     });
-      // 1 minute delay
-  }, 600000);
 
 });
 
