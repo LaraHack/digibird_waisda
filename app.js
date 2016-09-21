@@ -63,7 +63,8 @@ app.use(function(err, req, res, next) {
     });
 });
 
-waisda.mysql_connect();
+// waisda.mysql_connection();
+waisda.mysql_pool();
 
 app.set('port', process.env.PORT || 3010);
 
