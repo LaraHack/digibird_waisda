@@ -63,9 +63,35 @@ app.use(function(err, req, res, next) {
     });
 });
 
-// waisda.mysql_connection();
-connection.mysql_pool();
-//connection.mysql_connection();
+var conn = connection.init_connection();
+connection.acquire_connection(conn, function(err){
+  if (!err) {
+    console.log('connected as id ' + conn.threadId);
+  } else {
+    console.error('error connecting: ' + err.stack);
+    return;
+  }
+
+  conn.end(function(err){
+    // Do something after the connection is gracefully terminated.
+    console.log("Connection terminated!");
+  });
+});
+
+// var pool = connection.init_pool(10);
+// connection.acquire_pool(pool, function(err, connection) {
+//     if (!err) {
+//       console.log('connected as id ' + connection.threadId);
+//
+//       // release it
+//       connection.release();
+//       // connection released ot the pool
+//       console.log("Connection released!");
+//     } else {
+//       console.error('error connecting: ' + err.stack);
+//       return;
+//     }
+// });
 
 app.set('port', process.env.PORT || 3010);
 

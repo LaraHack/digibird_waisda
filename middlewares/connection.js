@@ -9,47 +9,32 @@ var connectionInfo = {
 };
 
 module.exports = {
-  mysql_connection: function () {
+  // one connection per request
+  init_connection: function () {
+    return mysql.createConnection(connectionInfo);
+  },
 
-    var connection = mysql.createConnection(connectionInfo);
-
+  acquire_connection: function(connection, callback) {
+    // get connection
     connection.connect(function(err){
-      if (!err) {
-        console.log('connected as id ' + connection.threadId);
-      } else {
-        console.error('error connecting: ' + err.stack);
-        return;
-      }
-    });
-
-    connection.end(function(err){
-      // Do something after the connection is gracefully terminated.
-      console.log("Connection terminated!");
+      // use the connection
+      callback(err);
     });
   },
 
   // pool connections to be able to share a single connection or to be able to
   // have and manage multiple connections
-  mysql_pool: function () {
+  init_pool: function(poolLimit) {
     // add maximum number of connections in the pool
-    connectionInfo.connectionLimit = 10;
-    var pool = mysql.createPool(connectionInfo);
+    connectionInfo.connectionLimit = poolLimit;
+    return mysql.createPool(connectionInfo);
+  },
 
-    pool.getConnection(function(err, connection) {
-      // connected! (unless `err` is set)
-
-      if (!err) {
-        console.log('connected as id ' + connection.threadId);
+  acquire_pool: function(pool, callback) {
+      // get connection
+      pool.getConnection(function(err, connection) {
         // use the connection
-
-        // release it
-        connection.release();
-          // connection released ot the pool
-          console.log("Connection released!");
-        } else {
-          console.error('error connecting: ' + err.stack);
-          return;
-        }
+        callback(err, connection);
     });
   }
 }
