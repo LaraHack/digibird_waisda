@@ -14,7 +14,7 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 // var users = require('./routes/users');
 
-var waisda = require('./middlewares/waisda');
+var connection = require('./middlewares/connection');
 
 var app = express();
 
@@ -64,7 +64,8 @@ app.use(function(err, req, res, next) {
 });
 
 // waisda.mysql_connection();
-waisda.mysql_pool();
+connection.mysql_pool();
+//connection.mysql_connection();
 
 app.set('port', process.env.PORT || 3010);
 
