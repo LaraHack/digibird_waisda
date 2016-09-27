@@ -11,8 +11,8 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var routes = require('./routes/index');
-// var users = require('./routes/users');
+var home = require('./routes/index');
+var video = require('./routes/video');
 
 var connection = require('./middlewares/connection');
 
@@ -31,8 +31,8 @@ app.use(bodyParser.urlencoded());
 app.use(cookieParser());
 
 // routes
-app.use('/', routes);
-// app.use('/users', users);
+app.use('/', home);
+app.use('/video', video);
 
 /// catch 404 and forwarding to error handler
 app.use(function(req, res, next) {
@@ -63,35 +63,11 @@ app.use(function(err, req, res, next) {
     });
 });
 
-var conn = connection.init_connection();
-connection.acquire_connection(conn, function(err){
-  if (!err) {
-    console.log('connected as id ' + conn.threadId);
-  } else {
-    console.error('error connecting: ' + err.stack);
-    return;
-  }
-
-  conn.end(function(err){
-    // Do something after the connection is gracefully terminated.
-    console.log("Connection terminated!");
-  });
-});
-
-// var pool = connection.init_pool(10);
-// connection.acquire_pool(pool, function(err, connection) {
-//     if (!err) {
-//       console.log('connected as id ' + connection.threadId);
-//
-//       // release it
-//       connection.release();
-//       // connection released ot the pool
-//       console.log("Connection released!");
-//     } else {
-//       console.error('error connecting: ' + err.stack);
-//       return;
-//     }
-// });
+// initialize database connection
+// single connection
+// connection.initConnection();
+// pooling connections
+connection.initPool(10);
 
 app.set('port', process.env.PORT || 3010);
 

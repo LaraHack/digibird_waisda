@@ -1,3 +1,9 @@
+/*******************************************************************************
+connection
+
+Creates the connection to the MySQL db either as a simple connection or
+in the form of a connection pool
+********************************************************************************/
 var mysql = require('mysql');
 var credentials = require('../helpers/local_mysql_credentials');
 
@@ -8,33 +14,36 @@ var connectionInfo = {
   database: credentials.DATABASE
 };
 
+var connection = null;
+
 module.exports = {
-  // one connection per request
-  init_connection: function () {
-    return mysql.createConnection(connectionInfo);
+  // one connection per request -> "expensive operation", pooling preferred
+  initConnection: function () {
+    connection = mysql.createConnection(connectionInfo);
   },
 
-  acquire_connection: function(connection, callback) {
+  acquireConnection: function(callback) {
     // get connection
     connection.connect(function(err){
       // use the connection
-      callback(err);
+      callback(err, connection);
     });
   },
 
-  // pool connections to be able to share a single connection or to be able to
-  // have and manage multiple connections
-  init_pool: function(poolLimit) {
+  // pool connections
+  // keep a number of conenctions open that can be reused by others
+  initPool: function(poolLimit) {
     // add maximum number of connections in the pool
     connectionInfo.connectionLimit = poolLimit;
-    return mysql.createPool(connectionInfo);
+    //return mysql.createPool(connectionInfo);
+    connection = mysql.createPool(connectionInfo);
   },
 
-  acquire_pool: function(pool, callback) {
+  acquirePool: function(callback) {
       // get connection
-      pool.getConnection(function(err, connection) {
+      connection.getConnection(function(err, conn) {
         // use the connection
-        callback(err, connection);
+        callback(err, conn);
     });
   }
-}
+};
