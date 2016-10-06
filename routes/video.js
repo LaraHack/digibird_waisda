@@ -8,7 +8,7 @@ Endpoint | Request type | Method
 /video | GET | getNoVideos
 /video?enabled=true | GET | getNoEnabledVideos
 /video | POST | insertVideo
-/video?id='xxx' | GET | getVideo('xxx')
+/video/title/:title | GET | getVideo(':title')
 *******************************************************************************/
 var express = require('express');
 var router = express.Router();
@@ -19,6 +19,12 @@ var video = require('../models/video');
 router.get('/', function(req, res) {
   // send a resource
   video.getNoVideos(res);
+});
+
+// POST request to insert a video
+router.post('/', function(req, res) {
+  // send a resource
+  video.addVideo(req.body.video, res);
 });
 
 // GET total number of enabled videos

@@ -13,6 +13,8 @@ var bodyParser = require('body-parser');
 
 var home = require('./routes/index');
 var video = require('./routes/video');
+var dictionary = require('./routes/dictionary');
+var synonym = require('./routes/synonym');
 
 var connection = require('./middlewares/connection');
 
@@ -33,6 +35,8 @@ app.use(cookieParser());
 // routes
 app.use('/', home);
 app.use('/video', video);
+app.use('/dict', dictionary);
+app.use('/synonym', synonym);
 
 /// catch 404 and forwarding to error handler
 app.use(function(req, res, next) {
