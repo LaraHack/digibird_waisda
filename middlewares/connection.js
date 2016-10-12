@@ -5,7 +5,7 @@ Creates the connection to the MySQL db either as a simple connection or
 in the form of a connection pool
 ********************************************************************************/
 var mysql = require('mysql');
-var credentials = require('../helpers/local_mysql_credentials');
+var credentials = require('../helpers/mysql_credentials');
 
 var connectionInfo = {
   host: credentials.HOST,
