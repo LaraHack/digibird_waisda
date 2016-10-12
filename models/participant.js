@@ -1,14 +1,11 @@
 /*******************************************************************************
-video
+participant
 
-Database operations regarding the Video table
+Database operations regarding the Participant table
 
 Endpoint | Request type | Method
 
-/video | GET | getNoVideos
-/video?enabled=true | GET | getNoEnabledVideos
-/video/title/:title | GET | getVideo(':title')
-/video | POST | insertVideo
+/player | GET | getNoPlayers
 /*******************************************************************************/
 var connection = require('../middlewares/connection');
 
@@ -20,38 +17,36 @@ var options = {
 };
 
 module.exports = {
-
   // GET total number of players
-  getNoParticipants: function (res) {
-    connection.acquirePool(function(err, connection) {
-        if (!err) {
-          var db = connection.config.database;
-          var queryNoParticipants = 'SELECT ' + db + '.sf_no_participants();';
+  getNoPlayers: function () {
+    return new Promise(function(resolve, reject) {
+      connection.acquirePool(function(err, connection) {
+          if (!err) {
+            var db = connection.config.database;
+            var queryNoPlayers = 'SELECT ' + db + '.sf_no_participants();';
 
-          options.sql = queryNoParticipants;
+            options.sql = queryNoPlayers;
 
-          connection.query(options, function(err, rows, fields) {
-              if (!err) {
-                // get name of returned variable that contains the result
-                var nameVarNoParticipants = fields[0].name;
-                // get result
-                var noParticipants = rows[0][nameVarNoParticipants];
-                // stringify result
-                var jsonResponse = JSON.stringify({'noParticipants': noParticipants});
+            connection.query(options, function(err, rows, fields) {
+                if (!err) {
+                  // get name of returned variable that contains the result
+                  var nameVarNoPlayers = fields[0].name;
+                  // get result
+                  var noPlayers = rows[0][nameVarNoPlayers];
+                  // resolve promise and send response
+                  resolve(noPlayers);
+                }
+              });
 
-                // send json response
-                res.send(jsonResponse);
-              }
-            });
-
-          // release the connection
-          connection.release();
-          // connection released to the pool
-          console.log("Connection released!");
-        } else {
-          console.error('error connecting: ' + err.stack);
-          res.send(err.stack);
-        }
+            // release the connection
+            connection.release();
+            // connection released to the pool
+            console.log("Connection released!");
+          } else {
+            console.error('error connecting: ' + err.stack);
+            reject(err.stack);
+          }
+        });
     });
   }
 };

@@ -20,10 +20,10 @@ var options = {
 };
 
 module.exports = {
-
   // GET total number of videos
-  getNoVideos: function (res) {
-    connection.acquirePool(function(err, connection) {
+  getNoVideos: function () {
+    return new Promise(function(resolve, reject) {
+      connection.acquirePool(function(err, connection) {
         if (!err) {
           var db = connection.config.database;
           var queryNoVideos = 'SELECT ' + db + '.sf_no_videos();';
@@ -36,11 +36,8 @@ module.exports = {
                 var nameVarNoVideos = fields[0].name;
                 // get result
                 var noVideos = rows[0][nameVarNoVideos];
-                // stringify result
-                var jsonResponse = JSON.stringify({'noVideos': noVideos});
-
-                // send json response
-                res.send(jsonResponse);
+                // resolve promise and send response
+                resolve(noVideos);
               }
             });
 
@@ -50,110 +47,108 @@ module.exports = {
           console.log("Connection released!");
         } else {
           console.error('error connecting: ' + err.stack);
-          res.send(err.stack);
+          reject(err.stack);
         }
+      });
     });
   },
 
   // GET number of videos that are enabled
-  getNoEnabledVideos: function (res) {
-    connection.acquirePool(function(err, connection) {
-        if (!err) {
-          var db = connection.config.database;
-          var queryNoEnabledVideos = 'SELECT ' + db + '.sf_no_enabled_videos();';
+  getNoEnabledVideos: function () {
+    return new Promise(function(resolve, reject) {
+      connection.acquirePool(function(err, connection) {
+          if (!err) {
+            var db = connection.config.database;
+            var queryNoEnabledVideos = 'SELECT ' + db + '.sf_no_enabled_videos();';
 
-          options.sql = queryNoEnabledVideos;
+            options.sql = queryNoEnabledVideos;
 
-          connection.query(options, function(err, rows, fields) {
-              if (!err) {
-                // get name of returned variable that contains the result
-                var nameVarNoVideos = fields[0].name;
-                // get result
-                var noVideos = rows[0][nameVarNoVideos];
-                // stringify result
-                var jsonResponse = JSON.stringify({'noVideos': noVideos});
+            connection.query(options, function(err, rows, fields) {
+                if (!err) {
+                  // get name of returned variable that contains the result
+                  var nameVarNoVideos = fields[0].name;
+                  // get result
+                  var noVideos = rows[0][nameVarNoVideos];
+                  // resolve promise and send response
+                  resolve(noVideos);
+                }
+              });
 
-                // send json response
-                res.send(jsonResponse);
-              }
-            });
-
-          // release the connection
-          connection.release();
-          // connection released to the pool
-          console.log("Connection released!");
-        } else {
-          console.error('error connecting: ' + err.stack);
-          res.send(err.stack);
-        }
-      });
+            // release the connection
+            connection.release();
+            // connection released to the pool
+            console.log("Connection released!");
+          } else {
+            console.error('error connecting: ' + err.stack);
+            reject(err.stack);
+          }
+        });
+    });
   },
 
   // GET videos with a title that contains a certain text
-  getTitleVideos: function (params, res) {
-    connection.acquirePool(function(err, connection) {
-        if (!err) {
-          var db = connection.config.database;
-          var queryTitleVideos = 'CALL ' + db + '.sp_select_videos_title(?);';
+  getTitleVideos: function (params) {
+    return new Promise(function(resolve, reject) {
+      connection.acquirePool(function(err, connection) {
+          if (!err) {
+            var db = connection.config.database;
+            var queryTitleVideos = 'CALL ' + db + '.sp_select_videos_title(?);';
 
-          options.sql = queryTitleVideos;
-          options.values = params.title;
+            options.sql = queryTitleVideos;
+            options.values = params.title;
 
-          console.log();
+            console.log();
 
-          connection.query(options, function(err, rows, fields) {
-              if (!err) {
-                // get result and stringify it in JSON format
-                var jsonResponse = JSON.stringify(rows[0]);
+            connection.query(options, function(err, rows, fields) {
+                if (!err) {
+                  // get result and resolve the promise
+                  resolve(rows[0]);
+                }
+              });
 
-                // send json response
-                res.send(jsonResponse);
-              }
-            });
-
-          // release the connection
-          connection.release();
-          // connection released to the pool
-          console.log("Connection released!");
-        } else {
-          console.error('error connecting: ' + err.stack);
-          res.send(err.stack);
-        }
+            // release the connection
+            connection.release();
+            // connection released to the pool
+            console.log("Connection released!");
+          } else {
+            console.error('error connecting: ' + err.stack);
+            reject(err.stack);
+          }
       });
+    });
   },
 
   // POST request: insert new video
-  addVideo: function (videoData, res) {
-    connection.acquirePool(function(err, connection) {
-        if (!err) {
-          var db = connection.config.database;
-          var queryAddVideo = 'CALL ' + db + '.sp_insert_video(?, ?, ?, ?, ?, ?, ?, ?, ?)';
+  addVideo: function (videoData) {
+    return new Promise(function(resolve, reject) {
+      connection.acquirePool(function(err, connection) {
+          if (!err) {
+            var db = connection.config.database;
+            var queryAddVideo = 'CALL ' + db + '.sp_insert_video(?, ?, ?, ?, ?, ?, ?, ?, ?)';
 
-          options.sql = queryAddVideo;
+            options.sql = queryAddVideo;
 
-          var video = JSON.parse(videoData);
-          options.values = [video.title, video.duration, video.imageUrl,
-            video.enabled, video.playerType, video.sourceUrl, video.fragmentID,
-            video.sectionNid, video.startTime];
+            var video = JSON.parse(videoData);
+            options.values = [video.title, video.duration, video.imageUrl,
+              video.enabled, video.playerType, video.sourceUrl, video.fragmentID,
+              video.sectionNid, video.startTime];
 
-          connection.query(options, function(err, rows, fields) {
-              if (!err) {
-                // get result and stringify it in JSON format
-                var jsonResponse = JSON.stringify(rows[0]);
+            connection.query(options, function(err, rows, fields) {
+                if (!err) {
+                  // get result
+                  resolve(rows[0]);
+                }
+              });
 
-                // send json response
-                res.send(jsonResponse);
-              }
-            });
-
-          // release the connection
-          connection.release();
-          // connection released to the pool
-          console.log("Connection released!");
-        } else {
-          console.error('error connecting: ' + err.stack);
-          res.send(err.stack);
-        }
+            // release the connection
+            connection.release();
+            // connection released to the pool
+            console.log("Connection released!");
+          } else {
+            console.error('error connecting: ' + err.stack);
+            reject(err.stack);
+          }
+        });
       });
     }
 };

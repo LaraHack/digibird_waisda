@@ -16,13 +16,17 @@ var synonym = require('../models/synonym');
 // GET synonyms
 router.get('/:synonym', function(req, res) {
   // send a resource
-  synonym.getSynonym(req.params, res);
+  synonym.getSynonym(req.params).then(function(result) {
+    res.json({'result': result});
+  });
 });
 
 // POST request to insert a synonym entry
 router.post('/', function(req, res) {
   // send a resource
-  synonym.addSynonymEntry(req.body.synonymEntry, res);
+  synonym.addSynonymEntry(req.body.synonymEntry).then(function(result) {
+    res.json({'result': result});
+  });
 });
 
 module.exports = router;

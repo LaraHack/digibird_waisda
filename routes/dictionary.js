@@ -16,13 +16,17 @@ var dictionary = require('../models/dictionary');
 // GET dictionary entry term
 router.get('/:term', function(req, res) {
   // send a resource
-  dictionary.getDictTerm(req.params, res);
+  dictionary.getDictTerm(req.params).then(function(result) {
+    res.json({'result': result});
+  });
 });
 
 // POST request to insert a dictionary entry
 router.post('/', function(req, res) {
   // send a resource
-  dictionary.addDictEntry(req.body.dictEntry, res);
+  dictionary.addDictEntry(req.body.dictEntry).then(function(result) {
+    res.json(result);
+  });
 });
 
 module.exports = router;

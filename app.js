@@ -13,8 +13,12 @@ var bodyParser = require('body-parser');
 
 var home = require('./routes/index');
 var video = require('./routes/video');
+var tag = require('./routes/tag');
+var game = require('./routes/game');
+var participant = require('./routes/participant');
 var dictionary = require('./routes/dictionary');
 var synonym = require('./routes/synonym');
+var statistics = require('./routes/statistics');
 
 var connection = require('./middlewares/connection');
 
@@ -35,8 +39,12 @@ app.use(cookieParser());
 // routes
 app.use('/', home);
 app.use('/video', video);
+app.use('/tag', tag);
+app.use('/game', game);
+app.use('/player', participant);
 app.use('/dict', dictionary);
 app.use('/synonym', synonym);
+app.use('/statistics', statistics);
 
 /// catch 404 and forwarding to error handler
 app.use(function(req, res, next) {
