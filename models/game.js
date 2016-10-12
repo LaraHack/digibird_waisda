@@ -18,7 +18,7 @@ var options = {
 
 module.exports = {
   // GET total number of games
-  getNoGames: function (res) {
+  getNoGames: function () {
     return new Promise(function(resolve, reject) {
       connection.acquirePool(function(err, connection) {
           if (!err) {

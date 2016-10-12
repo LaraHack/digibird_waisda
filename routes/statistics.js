@@ -12,7 +12,7 @@ var router = express.Router();
 
 var statistics = require('../models/statistics');
 
-// GET total number of videos
+// GET statistics: #players, #tags, #videos, #games
 router.get('/', function(req, res) {
   statistics.getStatistics().then(function(result) {
     // parse the result and put it in JSON form

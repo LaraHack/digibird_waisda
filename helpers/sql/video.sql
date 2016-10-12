@@ -42,7 +42,7 @@ BEGIN
 	SELECT COUNT(*) INTO no_enabled_videos FROM Video WHERE enabled = 1;
 	RETURN no_enabled_videos;
 END //
-DELIMITER;
+DELIMITER ;
 
 # Grant execution rights for the function:
 # GRANT EXECUTE ON FUNCTION /*database_name*/.sf_no_enabled_videos TO /*'username'*/@/*'database_host'*/;

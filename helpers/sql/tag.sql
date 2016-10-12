@@ -45,9 +45,9 @@ DELIMITER ;
 
 # Grant execution rights for the function:
 # GRANT EXECUTE ON FUNCTION /*database_name*/.sf_no_tags TO /*'username'*/@/*'database_host'*/;
-# GRANT EXECUTE ON FUNCTION waisda.sf_no_unique_tags TO /*'username'*/@'localhost';
+# GRANT EXECUTE ON FUNCTION waisda.sf_unique_no_tags TO /*'username'*/@'localhost';
 
 # Call stored function:
-# SELECT waisda.sf_no_unique_tags();
+# SELECT waisda.sf_unique_no_tags();
 
 #_________________________________________________

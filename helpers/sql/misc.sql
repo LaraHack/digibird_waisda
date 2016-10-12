@@ -5,9 +5,7 @@ mysqldump waisda -u root -p > backup_waisda.sql
 
 # Restore database from database dump
 create database waisda charset utf8 collate utf8_general_ci;
-
-mysql waisda -u root -p  < backup_waisda.sql 
-
+mysql waisda -u root -p  < backup_waisda.sql
 
 #_________________________________________________
 

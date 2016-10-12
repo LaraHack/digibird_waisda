@@ -1,11 +1,11 @@
 /*******************************************************************************
-participant
+game
 
-Retrieve information about participants
+Retrieve information about games
 
 Endpoint | Request type | Method
 
-/participant | GET | getNoParticipants
+/game | GET | getNoGames
 *******************************************************************************/
 var express = require('express');
 var router = express.Router();
