@@ -46,4 +46,12 @@ router.get('/title/:title', function(req, res) {
   });
 });
 
+// GET videos with similar tags
+router.get('/tag/:tag', function(req, res) {
+  // send a resource
+  video.getTagVideos(req.params).then(function(results) {
+    res.json(results);
+  });
+});
+
 module.exports = router;

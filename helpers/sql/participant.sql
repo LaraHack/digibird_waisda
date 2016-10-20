@@ -8,7 +8,7 @@ DROP FUNCTION IF EXISTS `sf_no_participants`;
 
 CREATE FUNCTION `sf_no_participants`()
 RETURNS INT
-COMMENT 'Stored function to get the total number of participants in the game'
+COMMENT 'Stored function to get the total number of players'
 BEGIN
 	DECLARE no_participants INT DEFAULT 0;
 	SELECT COUNT(DISTINCT user_id) INTO no_participants FROM Participant;

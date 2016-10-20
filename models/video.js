@@ -97,7 +97,35 @@ module.exports = {
             options.sql = queryTitleVideos;
             options.values = params.title;
 
-            console.log();
+            connection.query(options, function(err, rows, fields) {
+                if (!err) {
+                  // get result and resolve the promise
+                  resolve(rows[0]);
+                }
+              });
+
+            // release the connection
+            connection.release();
+            // connection released to the pool
+            console.log("Connection released!");
+          } else {
+            console.error('error connecting: ' + err.stack);
+            reject(err.stack);
+          }
+      });
+    });
+  },
+
+  // GET videos that contain a certain text in the tags
+  getTagVideos: function (params) {
+    return new Promise(function(resolve, reject) {
+      connection.acquirePool(function(err, connection) {
+          if (!err) {
+            var db = connection.config.database;
+            var queryVideos = 'CALL ' + db + '.sp_get_videos_LIKE_tags(?);';
+
+            options.sql = queryVideos;
+            options.values = params.tag;
 
             connection.query(options, function(err, rows, fields) {
                 if (!err) {

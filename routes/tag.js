@@ -27,4 +27,11 @@ router.get('/unique', function(req, res) {
   });
 });
 
+// GET videos with a certain tag
+router.get('/:tag', function(req, res) {
+  tag.getLikeTags(req.params).then(function(videos) {
+    res.json(videos);
+  });
+});
+
 module.exports = router;

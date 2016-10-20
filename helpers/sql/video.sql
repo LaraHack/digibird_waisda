@@ -9,7 +9,7 @@ DROP FUNCTION IF EXISTS `sf_no_videos`;
 
 CREATE FUNCTION `sf_no_videos`()
 RETURNS INT
-COMMENT 'Stored function to get the total number of records in the Video table'
+COMMENT 'Stored function to get the total number of videos'
 BEGIN
 	DECLARE no_videos INT DEFAULT 0;
 	SELECT COUNT(*) INTO no_videos FROM Video;
@@ -36,7 +36,7 @@ DROP FUNCTION IF EXISTS `sf_no_enabled_videos`;
 
 CREATE FUNCTION `sf_no_enabled_videos`()
 RETURNS INT
-COMMENT 'Stored function to get the total number of enabled videos from the Video table'
+COMMENT 'Stored function to get the total number of enabled videos'
 BEGIN
 	DECLARE no_enabled_videos INT DEFAULT 0;
 	SELECT COUNT(*) INTO no_enabled_videos FROM Video WHERE enabled = 1;
@@ -62,7 +62,7 @@ DELIMITER //
 DROP PROCEDURE IF EXISTS `sp_select_videos_title`;
 
 CREATE PROCEDURE `sp_select_videos_title`(IN p_title VARCHAR(255))
-COMMENT 'Stored PROCEDURE to get videos with a similar title from the Video table'
+COMMENT 'Stored procedure to get videos with a similar title'
 BEGIN
 	SELECT title, duration, imageUrl, playerType, sourceUrl, fragmentID,  sectionNid, startTime
   FROM Video WHERE enabled = 1 AND title LIKE CONCAT('%', p_title, '%');

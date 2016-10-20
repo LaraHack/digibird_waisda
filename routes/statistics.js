@@ -14,6 +14,7 @@ var statistics = require('../models/statistics');
 
 // GET statistics: #players, #tags, #videos, #games
 router.get('/', function(req, res) {
+  console.log("request received", req);
   statistics.getStatistics().then(function(result) {
     // parse the result and put it in JSON form
     var results = {};

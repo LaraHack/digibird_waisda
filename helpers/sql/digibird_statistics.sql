@@ -8,7 +8,7 @@ DROP FUNCTION IF EXISTS `sf_no_participants`;
 
 CREATE FUNCTION `sf_no_participants`()
 RETURNS INT
-COMMENT 'Stored function to get the total number of participants in the game'
+COMMENT 'Stored function to get the total number of players'
 BEGIN
 	DECLARE no_participants INT DEFAULT 0;
 	SELECT COUNT(DISTINCT user_id) INTO no_participants FROM Participant;
@@ -35,7 +35,7 @@ DROP FUNCTION IF EXISTS `sf_no_tags`;
 
 CREATE FUNCTION `sf_no_tags`()
 RETURNS INT
-COMMENT 'Stored function to get the total number of tags in the database'
+COMMENT 'Stored function to get the total number of tags'
 BEGIN
 	DECLARE no_tags INT DEFAULT 0;
 	SELECT COUNT(tag) INTO no_tags FROM TagEntry;
@@ -62,7 +62,7 @@ DROP FUNCTION IF EXISTS `sf_no_videos`;
 
 CREATE FUNCTION `sf_no_videos`()
 RETURNS INT
-COMMENT 'Stored function to get the total number of records in the Video table'
+COMMENT 'Stored function to get the total number of videos'
 BEGIN
 	DECLARE no_videos INT DEFAULT 0;
 	SELECT COUNT(*) INTO no_videos FROM Video;

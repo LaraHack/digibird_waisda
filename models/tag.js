@@ -81,5 +81,34 @@ module.exports = {
           }
       });
     });
-  }
+  },
+  // GET total number of tags
+  getLikeTags: function (params) {
+    return new Promise(function(resolve, reject) {
+      connection.acquirePool(function(err, connection) {
+          if (!err) {
+            var db = connection.config.database;
+            var queryVideos = 'CALL ' + db + '.sp_get_LIKE_tags(?)';
+
+            options.sql = queryVideos;
+            options.values = params.tag;
+
+            connection.query(options, function(err, rows, fields) {
+                if (!err) {
+                  // resolve promise and send response
+                  resolve(rows[0]);
+                }
+              });
+
+            // release the connection
+            connection.release();
+            // connection released to the pool
+            console.log("Connection released!");
+          } else {
+            console.error('error connecting: ' + err.stack);
+            reject(err.stack);
+          }
+      });
+    });
+  },
 };
