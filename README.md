@@ -30,9 +30,11 @@ Endpoint | Request type | Details
 `/video` | GET | Get total number of videos
 `/video/enabled` | GET | Get number of videos that are enabled (appear in the game)
 `/video/title/{*title*}` | GET | Get all videos with a title that contains *title*
+`/video/tag/title/{*text*}` | GET | Get all videos with tags that contain *text*
 `/video` | POST | Add a video to the game
 `/tag` | GET | Get total number of tags added 
 `/tag/unique` | GET | Get number of unique tags addded
+`/tag/{*text*}` | GET | Get all videos with tags that contain *text*
 `/player` | GET | Get total number of players
 `/game` | GET | Get total number of games played
 
