@@ -60,10 +60,10 @@ DELIMITER ;
 
 # Grant execution rights for the function:
 # GRANT EXECUTE ON FUNCTION /*database_name*/.sf_no_enabled_videos TO /*'username'*/@/*'database_host'*/;
-# GRANT EXECUTE ON FUNCTION waisda.sf_no_enabled_videos TO /*'username'*/@'localhost';
+# GRANT EXECUTE ON FUNCTION waisda.sp_get_videos_LIKE_tags TO /*'username'*/@'localhost';
 
 # Call stored procedure: (find all enabled videos that contain ‘est’ in title)
-# CALL waisda.sp_select_videos_title('est');
+# CALL waisda.sp_get_videos_LIKE_tags('ird');
 
 #_________________________________________________
 
