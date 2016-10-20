@@ -43,7 +43,7 @@ In nearly all cases, an API request returns data as a JSON-formatted document.
 ## Deployment
 This API is meant to give access to the database of an instance of the Waisda? game. 
 
-The credentials to access the database need to be added to the API in a file `/helpers/mysql_cedentials.js` with the following content:
+The credentials to access the database need to be added to the API in a file `/helpers/mysql_cedentials.js` with the following content (replace the `database_name`, `username` and `password` with the ones that correspond for the Waisda? instance):
 
 ```
 HOST = 'localhost';
