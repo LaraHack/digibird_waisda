@@ -37,10 +37,10 @@ Endpoint | Request type | Details
 `/video/enabled` | GET | getNoEnabledVideos()
 `/video/title/:title` | GET | getTitleVideos(':title')
 `/video/tag` | GET | getVideosAndTagsDesc()
-/video/tag/:tag | GET | getVideosWithTagsLike(':tag')
-/video/tag/date/:date | GET | getVideosAndTagsAfter(':date') or
+`/video/tag/:tag` | GET | getVideosWithTagsLike(':tag')
+`/video/tag/date/:date` | GET | getVideosAndTagsAfter(':date') or
                               getVideosAndTagsDesc()
-/video/tag | POST | getVideosAndTagsLimitAfter({date: "YYYY-MM-DDThh:mm:ss", limit: ":number"}) or 
+`/video/tag` | POST | getVideosAndTagsLimitAfter({date: "YYYY-MM-DDThh:mm:ss", limit: ":number"}) or 
                     getVideosAndTagsLimitDesc({limit: ":number"}) or
                     getVideosAndTagsAfter({date: "YYYY-MM-DDThh:mm:ss"}) or
                     getVideosAndTagsDesc()
