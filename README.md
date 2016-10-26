@@ -33,15 +33,15 @@ Endpoint | Request type | Details
 `/video/title/{title}` | GET | Get all videos with a title that contains *title*
 `/video/tag` | GET | Get all annotated videos and their tags, most recently annotated first
 `/video/tag/{text}` | GET | Get all videos with tags that contain *text*, most recently annotated first
-`/video/tag/date/{date}` | GET | Get all annotated videos and their tags, most recently annotated first. If the *date* is specified in the correct format, only the videos annotated after that date will be shown.
-`/video/tag` | POST | If the request contains `{date: "YYYY-MM-DDThh:mm:ss", limit: ":number"}`, then a list with the most recently annotated videos after that date and with the maximum limit of tags will be shown. If only the date is given and it is in the correct format, then the videos and their tags after that date will be sent. If only the limit is given, then only a maximum number of tags and their videos will be sent. If no parameter is specified, then all videos and their tags are sent, most recent ones first.
+`/video/tag/date/{date}` | GET | Get all annotated videos and their tags, most recently annotated first. If the *date* is specified in the correct format(1), only the videos annotated after that date will be shown.
+`/video/tag` | POST | If the request contains `{date: "YYYY-MM-DDThh:mm:ss", limit: ":number"}`, then a list with the most recently annotated videos after that date and with the maximum limit of tags will be shown. If only the date is given and it is in the correct format (1), then the videos and their tags after that date will be sent. If only the limit is given, then only a maximum number of tags and their videos will be sent. If no parameter is specified, then all videos and their tags are sent, most recent ones first.
 `/tag` | GET | Get total number of tags added 
 `/tag/unique` | GET | Get number of unique tags addded
 `/tag/{text}` | GET | Get all videos with tags that contain *text*
 `/player` | GET | Get total number of players
 `/game` | GET | Get total number of games played
 
-ISO_8601 format "YYYY-MM-DDThh:mm:ss"
+(1) ISO_8601 format "YYYY-MM-DDThh:mm:ss"
 
 In nearly all cases, an API request returns data as a JSON-formatted document.
 
