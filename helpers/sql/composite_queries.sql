@@ -1,8 +1,8 @@
 SELECT Game.video_id, Video.title, Video.imageUrl, Video.sourceUrl, Video.duration, TagEntry.creationDate, TagEntry.tag
 FROM TagEntry, Game, Video
 WHERE TagEntry.tag LIKE '%ird%'
-	AND TagEntry.game_id = Game.id
-	AND Video.id = Game.video_id
+  AND TagEntry.game_id = Game.id
+  AND Video.id = Game.video_id
 ORDER BY TagEntry.creationDate DESC;
 
 SELECT DISTINCT Game.video_id, MAX(TagEntry.creationDate) AS creationDate
@@ -47,35 +47,6 @@ SELECT STR_TO_DATE('2016-10-21 14:15:22', '%Y-%m-%d %H:%i:%s');
 USE waisda;
 
 DELIMITER //
-DROP PROCEDURE IF EXISTS `sp_get_videos_and_tags_AFTER`;
-
-CREATE PROCEDURE `sp_get_videos_and_tags_AFTER`(IN p_date DATETIME)
-COMMENT 'Get videos and their tags after certain date'
-BEGIN
-	SELECT Game.video_id, Video.title, Video.imageUrl, Video.sourceUrl, Video.duration, TagEntry.creationDate, TagEntry.tag
-	FROM TagEntry, Game, Video
-	WHERE TagEntry.game_id = Game.id
-		AND Video.id = Game.video_id
-		AND TagEntry.creationDate >= p_date
-	ORDER BY TagEntry.creationDate DESC;
-END //
-DELIMITER ;
-
-# Grant execution rights for the function:
-# GRANT EXECUTE ON PROCEDURE gdatabase_name*/.sf_no_tags TO /*'username'*/@/*'database_host'*/;
-# GRANT EXECUTE ON PROCEDURE waisda.sp_get_videos_and_tags_AFTER TO /*'username'*/@'localhost';
-
-# Call stored procedure:
-# CALL waisda.sp_get_videos_and_tags_AFTER(STR_TO_DATE('2016-10-20', '%Y-%m-%d'));
-
-#_________________________________________________
-
-# Get latest annotated videos and their tags after a certain date
-
-# USE /*database_name*/;
-USE waisda;
-
-DELIMITER //
 DROP PROCEDURE IF EXISTS `sp_get_videos_LIKE_tags_AFTER`;
 
 CREATE PROCEDURE `sp_get_videos_LIKE_tags_AFTER`(IN p_tag VARCHAR(255), IN p_date DATETIME)
@@ -84,15 +55,15 @@ BEGIN
 	SELECT Game.video_id, Video.title, Video.imageUrl, Video.sourceUrl, Video.duration, TagEntry.creationDate, TagEntry.tag
 	FROM TagEntry, Game, Video
 	WHERE TagEntry.tag LIKE CONCAT('%', p_tag, '%')
-		AND TagEntry.game_id = Game.id
-		AND Video.id = Game.video_id
-		AND TagEntry.creationDate >= p_date
+	  AND TagEntry.game_id = Game.id
+	  AND Video.id = Game.video_id
+	  AND TagEntry.creationDate >= p_date
 	ORDER BY TagEntry.creationDate DESC;
 END //
 DELIMITER ;
 
 # Grant execution rights for the function:
-# GRANT EXECUTE ON PROCEDURE gdatabase_name*/.sf_no_tags TO /*'username'*/@/*'database_host'*/;
+# GRANT EXECUTE ON PROCEDURE /*database_name*/.sp_get_videos_LIKE_tags_AFTER TO /*'username'*/@/*'database_host'*/;
 # GRANT EXECUTE ON PROCEDURE waisda.sp_get_videos_LIKE_tags_AFTER TO /*'username'*/@'localhost';
 
 # Call stored procedure:
@@ -106,83 +77,144 @@ DELIMITER ;
 USE waisda;
 
 DELIMITER //
-DROP PROCEDURE IF EXISTS `sp_get_videos_with_tags_DESC`;
+DROP PROCEDURE IF EXISTS `sp_get_videos_LIKE_tags_DESC`;
 
-CREATE PROCEDURE `sp_get_videos_with_tags_DESC`(IN p_tag VARCHAR(255))
+CREATE PROCEDURE `sp_get_videos_LIKE_tags_DESC`(IN p_tag VARCHAR(255))
 COMMENT 'Get latest annotated videos and their tags'
 BEGIN
 	SELECT Game.video_id, Video.title, Video.imageUrl, Video.sourceUrl, Video.duration, TagEntry.creationDate, TagEntry.tag
 	FROM TagEntry, Game, Video
 	WHERE TagEntry.tag LIKE CONCAT('%', p_tag, '%')
-		AND TagEntry.game_id = Game.id
-		AND Video.id = Game.video_id
+	  AND TagEntry.game_id = Game.id
+	  AND Video.id = Game.video_id
 	ORDER BY TagEntry.creationDate DESC;
 END //
 DELIMITER ;
 
 # Grant execution rights for the function:
-# GRANT EXECUTE ON PROCEDURE gdatabase_name*/.sf_no_tags TO /*'username'*/@/*'database_host'*/;
-# GRANT EXECUTE ON PROCEDURE waisda.sp_get_videos_with_tags_DESC TO /*'username'*/@'localhost';
+# GRANT EXECUTE ON PROCEDURE /*database_name*/.sp_get_videos_with_tags_DESC TO /*'username'*/@/*'database_host'*/;
+# GRANT EXECUTE ON PROCEDURE waisda.sp_get_videos_LIKE_tags_DESC TO /*'username'*/@'localhost';
 
 # Call stored procedure:
-# CALL waisda.sp_get_videos_with_tags_DESC('ird');
+# CALL waisda.sp_get_videos_LIKE_tags_DESC('ird');
 
 #_________________________________________________
 
-# Get videos that contain tags with a certain text in them, order the videos
-# by tag creation, the most recent annotated videos first based on the timestamp of the tags
+# Get latest annotated videos and their tags after a certain date
 
 # USE /*database_name*/;
 USE waisda;
 
 DELIMITER //
-DROP PROCEDURE IF EXISTS `sp_get_videos_LIKE_tags_DESC`;
+DROP PROCEDURE IF EXISTS `sp_get_videos_and_tags_limit_AFTER`;
 
-CREATE PROCEDURE `sp_get_videos_LIKE_tags_DESC`(IN p_tag VARCHAR(255))
-COMMENT 'Get videos that contain certain text in tags, latest ones first'
+CREATE PROCEDURE `sp_get_videos_and_tags_limit_AFTER`(IN p_date VARCHAR(19), IN p_limit INT(11))
+COMMENT 'Get videos and their tags after certain date, limit results'
 BEGIN
-	SELECT Video.id, Video.title, Video.imageUrl, Video.sourceUrl, Video.duration FROM Video
-	WHERE Video.id IN
-	(SELECT Game.video_id, TagEntry.creationDate, TagEntry.tag FROM TagEntry, Game
-	WHERE TagEntry.tag LIKE CONCAT('%', p_tag, '%')
-		AND TagEntry.game_id = Game.id
-	ORDER BY TagEntry.creationDate DESC);
+	SELECT Game.video_id, Video.title, Video.imageUrl, Video.sourceUrl, Video.duration, TagEntry.creationDate, TagEntry.tag
+	FROM TagEntry, Game, Video
+	WHERE TagEntry.game_id = Game.id
+	  AND Video.id = Game.video_id
+	  AND TagEntry.creationDate >= STR_TO_DATE(p_date, '%Y-%m-%dT%H:%i:%s')
+	ORDER BY TagEntry.creationDate DESC
+  LIMIT p_limit;
 END //
 DELIMITER ;
 
 # Grant execution rights for the function:
-# GRANT EXECUTE ON FUNCTION /*database_name*/.sf_no_enabled_videos TO /*'username'*/@/*'database_host'*/;
-# GRANT EXECUTE ON FUNCTION waisda.sp_get_videos_LIKE_tags TO /*'username'*/@'localhost';
+# GRANT EXECUTE ON PROCEDURE /*database_name*/.sp_get_videos_and_tags_AFTER TO /*'username'*/@/*'database_host'*/;
+# GRANT EXECUTE ON PROCEDURE waisda.sp_get_videos_and_tags_limit_AFTER TO /*'username'*/@'localhost';
 
-# Call stored procedure: (find all enabled videos that contain ‘est’ in title)
-# CALL waisda.sp_get_videos_LIKE_tags('ird');
+# Call stored procedure:
+# CALL waisda.sp_get_videos_and_tags_limit_AFTER('2016-10-20T00:00:00', 2);
 
 #_________________________________________________
 
-# Get videos that contain tags with a certain text in them
+# Get latest annotated videos and their tags after a certain date
 
 # USE /*database_name*/;
 USE waisda;
 
 DELIMITER //
-DROP PROCEDURE IF EXISTS `sp_get_videos_LIKE_tags`;
+DROP PROCEDURE IF EXISTS `sp_get_videos_and_tags_AFTER`;
 
-CREATE PROCEDURE `sp_get_videos_LIKE_tags`(IN p_tag VARCHAR(255))
-COMMENT 'Get videos that contain certain text in tags'
+CREATE PROCEDURE `sp_get_videos_and_tags_AFTER`(IN p_date VARCHAR(19))
+COMMENT 'Get videos and their tags after certain date'
 BEGIN
-	SELECT Video.id, Video.title, Video.imageUrl, Video.sourceUrl, Video.duration FROM Video
-	WHERE Video.id IN
-	(SELECT Game.video_id FROM TagEntry, Game
-	WHERE TagEntry.tag LIKE CONCAT('%', p_tag, '%') AND TagEntry.game_id = Game.id);
+	SELECT Game.video_id, Video.title, Video.imageUrl, Video.sourceUrl, Video.duration, TagEntry.creationDate, TagEntry.tag
+	FROM TagEntry, Game, Video
+	WHERE TagEntry.game_id = Game.id
+	  AND Video.id = Game.video_id
+	  AND TagEntry.creationDate >= STR_TO_DATE(p_date, '%Y-%m-%dT%H:%i:%s')
+	ORDER BY TagEntry.creationDate DESC;
 END //
 DELIMITER ;
 
 # Grant execution rights for the function:
-# GRANT EXECUTE ON FUNCTION /*database_name*/.sf_no_enabled_videos TO /*'username'*/@/*'database_host'*/;
-# GRANT EXECUTE ON FUNCTION waisda.sp_get_videos_LIKE_tags TO /*'username'*/@'localhost';
+# GRANT EXECUTE ON PROCEDURE /*database_name*/.sp_get_videos_and_tags_AFTER TO /*'username'*/@/*'database_host'*/;
+# GRANT EXECUTE ON PROCEDURE waisda.sp_get_videos_and_tags_AFTER TO /*'username'*/@'localhost';
 
-# Call stored procedure: (find all enabled videos that contain ‘est’ in title)
-# CALL waisda.sp_get_videos_LIKE_tags('ird');
+# Call stored procedure:
+# CALL waisda.sp_get_videos_and_tags_AFTER('2016-10-20T00:00:00');
+
+#_________________________________________________
+
+# Get annotated videos and their tags that contain a text in them
+# the oldest videos that contain annotated tags first
+
+# USE /*database_name*/;
+USE waisda;
+
+DELIMITER //
+DROP PROCEDURE IF EXISTS `sp_get_videos_and_tags_limit_DESC`;
+
+CREATE PROCEDURE `sp_get_videos_and_tags_limit_DESC`(IN p_limit INT(11))
+COMMENT 'Get latest annotated videos and their tags, limit results'
+BEGIN
+  	SELECT Game.video_id, Video.title, Video.imageUrl, Video.sourceUrl, Video.duration, TagEntry.creationDate, TagEntry.tag
+  	FROM TagEntry, Game, Video
+  	WHERE TagEntry.game_id = Game.id
+  	  AND Video.id = Game.video_id
+    ORDER BY TagEntry.creationDate DESC
+    LIMIT p_limit;
+END //
+DELIMITER ;
+
+# Grant execution rights for the function:
+# GRANT EXECUTE ON PROCEDURE /*database_name*/.sp_get_videos_with_tags TO /*'username'*/@/*'database_host'*/;
+# GRANT EXECUTE ON PROCEDURE waisda.sp_get_videos_and_tags_limit_DESC TO /*'username'*/@'localhost';
+
+# Call stored procedure:
+# CALL waisda.sp_get_videos_and_tags_limit_DESC(5);
+
+#_________________________________________________
+
+# Get annotated videos and their tags that contain a text in them
+# the oldest videos that contain annotated tags first
+
+# USE /*database_name*/;
+USE waisda;
+
+DELIMITER //
+DROP PROCEDURE IF EXISTS `sp_get_videos_and_tags_DESC`;
+
+CREATE PROCEDURE `sp_get_videos_and_tags_DESC`()
+COMMENT 'Get latest annotated videos and their tags'
+BEGIN
+  	SELECT Game.video_id, Video.title, Video.imageUrl, Video.sourceUrl, Video.duration, TagEntry.creationDate, TagEntry.tag
+  	FROM TagEntry, Game, Video
+  	WHERE TagEntry.game_id = Game.id
+  	  AND Video.id = Game.video_id
+    ORDER BY TagEntry.creationDate DESC;
+END //
+DELIMITER ;
+
+# Grant execution rights for the function:
+# GRANT EXECUTE ON PROCEDURE /*database_name*/.sp_get_videos_with_tags TO /*'username'*/@/*'database_host'*/;
+# GRANT EXECUTE ON PROCEDURE waisda.sp_get_videos_and_tags_DESC TO /*'username'*/@'localhost';
+
+# Call stored procedure:
+# CALL waisda.sp_get_videos_and_tags_DESC();
 
 #_________________________________________________
 

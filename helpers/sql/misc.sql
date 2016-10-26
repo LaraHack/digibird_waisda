@@ -22,3 +22,8 @@ grant execute on waisda.* to 'test_waisda'@'localhost';
 show grants for 'test_waisda'@'localhost';
 
 #_________________________________________________
+
+UPDATE Video
+SET Video.sourceUrl = REPLACE(Video.sourceUrl, '.dref.mp4', '.mp4');
+
+#_________________________________________________

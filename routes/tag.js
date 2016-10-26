@@ -27,10 +27,11 @@ router.get('/unique', function(req, res) {
   });
 });
 
-// GET videos with a certain tag
+// GET similar tags
 router.get('/:tag', function(req, res) {
-  tag.getLikeTags(req.params).then(function(videos) {
-    res.json(videos);
+  // send a resource
+  tag.getTagsLike(req.params).then(function(results) {
+    res.json(results);
   });
 });
 

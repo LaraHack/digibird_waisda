@@ -82,20 +82,21 @@ module.exports = {
       });
     });
   },
-  // GET total number of tags
-  getLikeTags: function (params) {
+
+  // GET tags that contain a certain text
+  getTagsLike: function (params) {
     return new Promise(function(resolve, reject) {
       connection.acquirePool(function(err, connection) {
           if (!err) {
             var db = connection.config.database;
-            var queryVideos = 'CALL ' + db + '.sp_get_LIKE_tags(?)';
+            var queryVideos = 'CALL ' + db + '.sp_get_videos_LIKE_tags(?);';
 
             options.sql = queryVideos;
             options.values = params.tag;
 
             connection.query(options, function(err, rows, fields) {
                 if (!err) {
-                  // resolve promise and send response
+                  // get result and resolve the promise
                   resolve(rows[0]);
                 }
               });
@@ -110,5 +111,5 @@ module.exports = {
           }
       });
     });
-  },
+  }
 };
