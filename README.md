@@ -32,6 +32,18 @@ Endpoint | Request type | Details
 `/video/title/{title}` | GET | Get all videos with a title that contains *title*
 `/video/tag/title/{text}` | GET | Get all videos with tags that contain *text*
 `/video` | POST | Add a video to the game
+`/video` | GET | getNoVideos()
+`/video` | POST | insertVideo()
+`/video/enabled` | GET | getNoEnabledVideos()
+`/video/title/:title` | GET | getTitleVideos(':title')
+`/video/tag` | GET | getVideosAndTagsDesc()
+/video/tag/:tag | GET | getVideosWithTagsLike(':tag')
+/video/tag/date/:date | GET | getVideosAndTagsAfter(':date') ||
+                              getVideosAndTagsDesc()
+/video/tag | POST | getVideosAndTagsLimitAfter({date: "YYYY-MM-DDThh:mm:ss", limit: ":number"}) ||
+                    getVideosAndTagsLimitDesc({limit: ":number"}) ||
+                    getVideosAndTagsAfter({date: "YYYY-MM-DDThh:mm:ss"}) || 
+                    getVideosAndTagsDesc()
 `/tag` | GET | Get total number of tags added 
 `/tag/unique` | GET | Get number of unique tags addded
 `/tag/{text}` | GET | Get all videos with tags that contain *text*
