@@ -121,6 +121,35 @@ BEGIN
 END //
 DELIMITER ;
 
+#_________________________________________________
+
+SAME STORED PROCEDURE, OLDER VERSIONS OF MySQL
+
+#_________________________________________________
+
+USE waisda;
+
+DELIMITER //
+DROP PROCEDURE IF EXISTS `sp_get_videos_and_tags_limit_AFTER`;
+
+CREATE PROCEDURE `sp_get_videos_and_tags_limit_AFTER`(IN p_date VARCHAR(19), IN p_limit INT(11))
+COMMENT 'Get videos and their tags after certain date, limit results'
+BEGIN
+  PREPARE stmt FROM
+  " SELECT Game.video_id, Video.title, Video.imageUrl, Video.sourceUrl, Video.duration, TagEntry.creationDate, TagEntry.tag
+  	FROM TagEntry, Game, Video
+  	WHERE TagEntry.game_id = Game.id
+  	  AND Video.id = Game.video_id
+  	  AND TagEntry.creationDate >= STR_TO_DATE(?, '%Y-%m-%dT%H:%i:%s')
+  	ORDER BY TagEntry.creationDate DESC
+    LIMIT ?";
+  SET @date = p_date;
+  SET @limit = p_limit;
+  EXECUTE stmt USING @date, @limit;
+  DEALLOCATE PREPARE stmt;
+END //
+DELIMITER ;
+
 # Grant execution rights for the function:
 # GRANT EXECUTE ON PROCEDURE /*database_name*/.sp_get_videos_and_tags_AFTER TO /*'username'*/@/*'database_host'*/;
 # GRANT EXECUTE ON PROCEDURE waisda.sp_get_videos_and_tags_limit_AFTER TO /*'username'*/@'localhost';
@@ -134,7 +163,6 @@ DELIMITER ;
 
 # USE /*database_name*/;
 USE waisda;
-
 DELIMITER //
 DROP PROCEDURE IF EXISTS `sp_get_videos_and_tags_AFTER`;
 
@@ -186,6 +214,31 @@ DELIMITER ;
 
 # Call stored procedure:
 # CALL waisda.sp_get_videos_and_tags_limit_DESC(5);
+
+#_________________________________________________
+
+SAME STORED PROCEDURE, OLDER VERSIONS OF MySQL
+
+#_________________________________________________
+
+USE waisda;
+DELIMITER //
+DROP PROCEDURE IF EXISTS `sp_get_videos_and_tags_limit_DESC`;
+
+CREATE PROCEDURE `sp_get_videos_and_tags_limit_DESC`(IN p_limit INT(11))
+COMMENT 'Get latest annotated videos and their tags, limit results'
+BEGIN
+  PREPARE stmt FROM
+  " SELECT Game.video_id, Video.title, Video.imageUrl, Video.sourceUrl, Video.duration, TagEntry.creationDate, TagEntry.tag
+      FROM TagEntry, Game, Video
+      WHERE TagEntry.game_id = Game.id AND Video.id = Game.video_id
+      ORDER BY TagEntry.creationDate DESC
+      LIMIT ?";
+  SET @limit = p_limit;
+  EXECUTE stmt USING @limit;
+  DEALLOCATE PREPARE stmt;
+END //
+DELIMITER ;
 
 #_________________________________________________
 
