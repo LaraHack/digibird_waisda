@@ -38,11 +38,11 @@ Endpoint | Request type | Details
 `/video/title/:title` | GET | getTitleVideos(':title')
 `/video/tag` | GET | getVideosAndTagsDesc()
 /video/tag/:tag | GET | getVideosWithTagsLike(':tag')
-/video/tag/date/:date | GET | getVideosAndTagsAfter(':date') ||
+/video/tag/date/:date | GET | getVideosAndTagsAfter(':date') or
                               getVideosAndTagsDesc()
-/video/tag | POST | getVideosAndTagsLimitAfter({date: "YYYY-MM-DDThh:mm:ss", limit: ":number"}) ||
-                    getVideosAndTagsLimitDesc({limit: ":number"}) ||
-                    getVideosAndTagsAfter({date: "YYYY-MM-DDThh:mm:ss"}) || 
+/video/tag | POST | getVideosAndTagsLimitAfter({date: "YYYY-MM-DDThh:mm:ss", limit: ":number"}) or 
+                    getVideosAndTagsLimitDesc({limit: ":number"}) or
+                    getVideosAndTagsAfter({date: "YYYY-MM-DDThh:mm:ss"}) or
                     getVideosAndTagsDesc()
 `/tag` | GET | Get total number of tags added 
 `/tag/unique` | GET | Get number of unique tags addded
