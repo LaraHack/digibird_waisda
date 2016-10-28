@@ -163,6 +163,7 @@ DELIMITER ;
 
 # USE /*database_name*/;
 USE waisda;
+
 DELIMITER //
 DROP PROCEDURE IF EXISTS `sp_get_videos_and_tags_AFTER`;
 
@@ -222,6 +223,7 @@ SAME STORED PROCEDURE, OLDER VERSIONS OF MySQL
 #_________________________________________________
 
 USE waisda;
+
 DELIMITER //
 DROP PROCEDURE IF EXISTS `sp_get_videos_and_tags_limit_DESC`;
 

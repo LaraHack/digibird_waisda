@@ -3,6 +3,8 @@ utils
 
 Various helper functions
 ********************************************************************************/
+var tagPersistentID = "http://waisda.beeldengeluid.nl/tag/";
+
 module.exports = {
   // Desired format for the ISO 8601 date: YYYY-MM-DDThh:mm:ss
   checkISO_8601_date: function (datetime) {
@@ -20,7 +22,7 @@ module.exports = {
     item.imageUrl = element.imageUrl;
     item.sourceUrl = element.sourceUrl;
     item.tags = [];
-    item.tags.push({"tag": `${element.tag}`, "creationDate": `${element.creationDate}`});
+    item.tags.push({"tag_pid": `${tagPersistentID}${element.id}`, "tag": `${element.tag}`, "creationDate": `${element.creationDate}`});
 
     return item;
   },
@@ -35,7 +37,7 @@ module.exports = {
         items.push(current);
         previousVideoId = current.video_id;
       } else {
-        items[items.length-1].tags.push({"tag": `${data[i].tag}`, "creationDate": `${data[i].creationDate}`});
+        items[items.length-1].tags.push({"tag_pid": `${tagPersistentID}${data[i].id}`, "tag": `${data[i].tag}`, "creationDate": `${data[i].creationDate}`});
       }
     }
 
