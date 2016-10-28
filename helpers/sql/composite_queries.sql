@@ -52,7 +52,7 @@ DROP PROCEDURE IF EXISTS `sp_get_videos_LIKE_tags_AFTER`;
 CREATE PROCEDURE `sp_get_videos_LIKE_tags_AFTER`(IN p_tag VARCHAR(255), IN p_date DATETIME)
 COMMENT 'Get videos and their tags after certain date'
 BEGIN
-	SELECT Game.video_id, Video.title, Video.imageUrl, Video.sourceUrl, Video.duration, TagEntry.creationDate, TagEntry.tag
+	SELECT Game.video_id, Video.title, Video.imageUrl, Video.sourceUrl, Video.duration, TagEntry.id, TagEntry.creationDate, TagEntry.tag
 	FROM TagEntry, Game, Video
 	WHERE TagEntry.tag LIKE CONCAT('%', p_tag, '%')
 	  AND TagEntry.game_id = Game.id
@@ -82,7 +82,7 @@ DROP PROCEDURE IF EXISTS `sp_get_videos_LIKE_tags_DESC`;
 CREATE PROCEDURE `sp_get_videos_LIKE_tags_DESC`(IN p_tag VARCHAR(255))
 COMMENT 'Get latest annotated videos and their tags'
 BEGIN
-	SELECT Game.video_id, Video.title, Video.imageUrl, Video.sourceUrl, Video.duration, TagEntry.creationDate, TagEntry.tag
+	SELECT Game.video_id, Video.title, Video.imageUrl, Video.sourceUrl, Video.duration, TagEntry.id, TagEntry.creationDate, TagEntry.tag
 	FROM TagEntry, Game, Video
 	WHERE TagEntry.tag LIKE CONCAT('%', p_tag, '%')
 	  AND TagEntry.game_id = Game.id
@@ -111,7 +111,7 @@ DROP PROCEDURE IF EXISTS `sp_get_videos_and_tags_limit_AFTER`;
 CREATE PROCEDURE `sp_get_videos_and_tags_limit_AFTER`(IN p_date VARCHAR(19), IN p_limit INT(11))
 COMMENT 'Get videos and their tags after certain date, limit results'
 BEGIN
-	SELECT Game.video_id, Video.title, Video.imageUrl, Video.sourceUrl, Video.duration, TagEntry.creationDate, TagEntry.tag
+	SELECT Game.video_id, Video.title, Video.imageUrl, Video.sourceUrl, Video.duration, TagEntry.id, TagEntry.creationDate, TagEntry.tag
 	FROM TagEntry, Game, Video
 	WHERE TagEntry.game_id = Game.id
 	  AND Video.id = Game.video_id
@@ -136,7 +136,7 @@ CREATE PROCEDURE `sp_get_videos_and_tags_limit_AFTER`(IN p_date VARCHAR(19), IN 
 COMMENT 'Get videos and their tags after certain date, limit results'
 BEGIN
   PREPARE stmt FROM
-  " SELECT Game.video_id, Video.title, Video.imageUrl, Video.sourceUrl, Video.duration, TagEntry.creationDate, TagEntry.tag
+  " SELECT Game.video_id, Video.title, Video.imageUrl, Video.sourceUrl, Video.duration, TagEntry.id, TagEntry.creationDate, TagEntry.tag
   	FROM TagEntry, Game, Video
   	WHERE TagEntry.game_id = Game.id
   	  AND Video.id = Game.video_id
@@ -169,7 +169,7 @@ DROP PROCEDURE IF EXISTS `sp_get_videos_and_tags_AFTER`;
 CREATE PROCEDURE `sp_get_videos_and_tags_AFTER`(IN p_date VARCHAR(19))
 COMMENT 'Get videos and their tags after certain date'
 BEGIN
-	SELECT Game.video_id, Video.title, Video.imageUrl, Video.sourceUrl, Video.duration, TagEntry.creationDate, TagEntry.tag
+	SELECT Game.video_id, Video.title, Video.imageUrl, Video.sourceUrl, Video.duration, TagEntry.id, TagEntry.creationDate, TagEntry.tag
 	FROM TagEntry, Game, Video
 	WHERE TagEntry.game_id = Game.id
 	  AND Video.id = Game.video_id
@@ -199,7 +199,7 @@ DROP PROCEDURE IF EXISTS `sp_get_videos_and_tags_limit_DESC`;
 CREATE PROCEDURE `sp_get_videos_and_tags_limit_DESC`(IN p_limit INT(11))
 COMMENT 'Get latest annotated videos and their tags, limit results'
 BEGIN
-  	SELECT Game.video_id, Video.title, Video.imageUrl, Video.sourceUrl, Video.duration, TagEntry.creationDate, TagEntry.tag
+  	SELECT Game.video_id, Video.title, Video.imageUrl, Video.sourceUrl, Video.duration, TagEntry.id, TagEntry.creationDate, TagEntry.tag
   	FROM TagEntry, Game, Video
   	WHERE TagEntry.game_id = Game.id
   	  AND Video.id = Game.video_id
@@ -229,7 +229,7 @@ CREATE PROCEDURE `sp_get_videos_and_tags_limit_DESC`(IN p_limit INT(11))
 COMMENT 'Get latest annotated videos and their tags, limit results'
 BEGIN
   PREPARE stmt FROM
-  " SELECT Game.video_id, Video.title, Video.imageUrl, Video.sourceUrl, Video.duration, TagEntry.creationDate, TagEntry.tag
+  " SELECT Game.video_id, Video.title, Video.imageUrl, Video.sourceUrl, Video.duration, TagEntry.id, TagEntry.creationDate, TagEntry.tag
       FROM TagEntry, Game, Video
       WHERE TagEntry.game_id = Game.id AND Video.id = Game.video_id
       ORDER BY TagEntry.creationDate DESC
@@ -254,7 +254,7 @@ DROP PROCEDURE IF EXISTS `sp_get_videos_and_tags_DESC`;
 CREATE PROCEDURE `sp_get_videos_and_tags_DESC`()
 COMMENT 'Get latest annotated videos and their tags'
 BEGIN
-  	SELECT Game.video_id, Video.title, Video.imageUrl, Video.sourceUrl, Video.duration, TagEntry.creationDate, TagEntry.tag
+  	SELECT Game.video_id, Video.title, Video.imageUrl, Video.sourceUrl, Video.duration, TagEntry.id, TagEntry.creationDate, TagEntry.tag
   	FROM TagEntry, Game, Video
   	WHERE TagEntry.game_id = Game.id
   	  AND Video.id = Game.video_id
