@@ -4,6 +4,7 @@ utils
 Various helper functions
 ********************************************************************************/
 var tagPersistentID = "http://waisda.beeldengeluid.nl/tag/";
+var notFountDefaultThumbnail = "/static/img/BenG_testbeeld.jpg";
 
 module.exports = {
   // Desired format for the ISO 8601 date: YYYY-MM-DDThh:mm:ss
@@ -13,14 +14,20 @@ module.exports = {
     return ISO_8601_FULL.test(datetime);
   },
 
+  getThumbnail: function (imageUrl) {
+    return (imageUrl === notFountDefaultThumbnail ? null : imageUrl);
+  },
+
   writeElement: function (element) {
     var item = {};
 
     item.video_id = element.video_id;
     item.title = element.title;
     item.duration = element.duration;
-    item.imageUrl = element.imageUrl;
+    item.imageUrl = this.getThumbnail(element.imageUrl);
     item.sourceUrl = element.sourceUrl;
+    item.attribute = element.attribute;
+    item.value = element.value;
     item.tags = [];
     item.tags.push({"tag_pid": `${tagPersistentID}${element.id}`, "tag": `${element.tag}`, "creationDate": `${element.creationDate}`});
 
