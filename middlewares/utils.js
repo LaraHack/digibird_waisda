@@ -7,6 +7,16 @@ var tagPersistentID = "http://waisda.beeldengeluid.nl/tag/";
 var notFountDefaultThumbnail = "/static/img/BenG_testbeeld.jpg";
 
 module.exports = {
+  normalizeEntry: function (entry) {
+    // transform to lowercase
+    entry = entry.toLowerCase();
+
+    // remove all characters that are not digits and alpha characters".
+    entry = entry.replace(/[^0-9a-z]/g, '');
+
+    return entry;
+  },
+
   // Desired format for the ISO 8601 date: YYYY-MM-DDThh:mm:ss
   checkISO_8601_date: function (datetime) {
     var ISO_8601_FULL = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/;

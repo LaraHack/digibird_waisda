@@ -10,21 +10,21 @@ Endpoint | Request type | Method
 *******************************************************************************/
 var express = require('express');
 var router = express.Router();
-
 var dictionary = require('../models/dictionary');
+var utils = require('../middlewares/utils');
 
 // GET dictionary entry term
-router.get('/:term', function(req, res) {
+router.get('/term/:term', function(req, res) {
   // send a resource
-  dictionary.getDictTerm(req.params).then(function(result) {
-    res.json({'result': result});
+  dictionary.getDictionaryTerm(req.params.term).then(function(result) {
+    res.json(result);
   });
 });
 
 // POST request to insert a dictionary entry
 router.post('/', function(req, res) {
   // send a resource
-  dictionary.addDictEntry(req.body.dictEntry).then(function(result) {
+  dictionary.addDictionaryEntry(req.body.dictEntry).then(function(result) {
     res.json(result);
   });
 });

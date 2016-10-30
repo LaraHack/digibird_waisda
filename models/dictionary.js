@@ -8,6 +8,10 @@ Endpoint | Request type | Method
 /dict/:term | GET | getDictEntry
 /dict | POST |  addDictEntry
 /*******************************************************************************/
+var fs = require('fs');
+var path = require('path');
+var COMMON_NAMES_NL = path.resolve(__dirname, '..', 'helpers/ioc_tuples.json');
+var utils = require('../middlewares/utils');
 var connection = require('../middlewares/connection');
 
 // query options
@@ -18,23 +22,19 @@ var options = {
 };
 
 module.exports = {
-
   // GET dictionary entry
-  getDictEntry: function (params) {
+  getDictionaryTerm: function (term) {
     return new Promise(function(resolve, reject) {
       connection.acquirePool(function(err, connection) {
           if (!err) {
             var db = connection.config.database;
-            var queryDictTerm = 'SELECT ' + db + '.sp_get_dict_term(?);';
+            var queryDictTerm = 'CALL ' + db + '.sp_get_dict_term(?);';
 
             options.sql = queryDictTerm;
-            options.values = params.term;
+            options.values = utils.normalizeEntry(term);
 
             connection.query(options, function(err, rows, fields) {
                 if (!err) {
-                  // result(s) in the form
-                  // {Dictionary: 'valueDictionary', normalizedTag: 'valueNormalizedTag'}
-                  // var dictEntry = rows[0];
                   // get result and resolve promise
                   resolve(rows[0]);
                 }
@@ -52,8 +52,20 @@ module.exports = {
     });
   },
 
+  addDictionaryEntries: function () {
+    try {
+     var contents = fs.readFileSync(COMMON_NAMES_NL, 'utf-8');
+     var parsed = JSON.parse(contents);
+     for (var i = 0; i < parsed.length; i++) {
+       this.addDictionaryEntry({"normalizedTag":`${utils.normalizeEntry(parsed[i].common_name)}`,"dictionary":"common_names_NL"});
+     }
+   } catch (error) {
+     console.error(error);
+   }
+  },
+
   // POST request: insert new dictionary term
-  addDictEntry: function (dictEntryData) {
+  addDictionaryEntry: function (dictEntryData) {
     return new Promise(function(resolve, reject) {
       connection.acquirePool(function(err, connection) {
           if (!err) {

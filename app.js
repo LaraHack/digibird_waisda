@@ -42,7 +42,7 @@ app.use('/video', video);
 app.use('/tag', tag);
 app.use('/game', game);
 app.use('/player', participant);
-app.use('/dict', dictionary);
+app.use('/dictionary', dictionary);
 app.use('/synonym', synonym);
 app.use('/statistics', statistics);
 

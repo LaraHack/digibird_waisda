@@ -139,7 +139,7 @@ COMMENT 'Get videos and their tags after certain date, limit results'
 BEGIN
   PREPARE stmt FROM
   " SELECT Game.video_id, Video.title, Video.imageUrl, Video.sourceUrl, Video.duration, VideoMetadata.attribute, VideoMetadata.value, TagEntry.id, TagEntry.creationDate, TagEntry.tag
-  	FROM TVideo, VideoMetadata, Game, TagEntry
+  	FROM Video, VideoMetadata, Game, TagEntry
   	WHERE TagEntry.game_id = Game.id
   	  AND Video.id = Game.video_id AND Video.id = VideoMetadata.video_id
   	  AND TagEntry.creationDate >= STR_TO_DATE(?, '%Y-%m-%dT%H:%i:%s')
