@@ -2,8 +2,6 @@
 
 A Node.js application built to access the MySQL database of [Waisda?](http://dl.acm.org/citation.cfm?id=2502221). It can be used to get statistics and perform operations on the database of the game.
 
-More details will be added here. Currently under development!
-
 ## Introduction
 The Waisda? database API is primarly intended for computers to communicate with other computers. It is used to provide information regarding the data that is used to populate an instance of the [Waisda? video labelling game](https://github.com/beeldengeluid/waisda) database.
 
